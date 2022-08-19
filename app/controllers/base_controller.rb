@@ -4,8 +4,6 @@ class BaseController < ApplicationController
 	DEFAULT_PAGE = 1
 
 	def per_page
-		puts "=====================params[:per_page]::::#{params[:per_page]}"
-		puts "=====================DEFAULT_PER_PAGE_COUNT::::#{DEFAULT_PER_PAGE_COUNT}"
 		params[:per_page] || DEFAULT_PER_PAGE_COUNT
 	end
 
