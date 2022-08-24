@@ -1,5 +1,7 @@
-class ArticlesController < BaseController #mid layer controller
-  before_action :set_article, only: %i[ show edit update destroy ]
+# frozen_string_literal: true
+
+class ArticlesController < BaseController
+  before_action :set_article, only: %i[show edit update destroy]
   before_action :eligible_for_update, only: %i[update]
   before_action :set_total_read_count, only: %i[index]
 
@@ -12,12 +14,13 @@ class ArticlesController < BaseController #mid layer controller
 
   def index
     @per_page = per_page
-    # render json: { articles: @articles }, status: :ok
     @articles = Article.first(@per_page.to_i)
+    render json: { articles: @articles, meta: { total: @articles.count } }, status: :ok
   end
 
   # GET /articles/1 or /articles/1.json
   def show
+    render json: { article: @article }, status: :ok
   end
 
   # GET /articles/new
@@ -26,16 +29,15 @@ class ArticlesController < BaseController #mid layer controller
   end
 
   # GET /articles/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /articles or /articles.json
   def create
     @article = Article.new(article_params)
 
     respond_to do |format|
-      if @article.save
-        format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
+      if @article.save!
+        format.html { redirect_to article_url(@article), notice: 'Article was successfully created.' }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -48,7 +50,7 @@ class ArticlesController < BaseController #mid layer controller
   def update
     respond_to do |format|
       if @article.update(article_params)
-        format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
+        format.html { redirect_to article_url(@article), notice: 'Article was successfully updated.' }
         format.json { render :show, status: :ok, location: @article }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -59,35 +61,36 @@ class ArticlesController < BaseController #mid layer controller
 
   # DELETE /articles/1 or /articles/1.json
   def destroy
-    @article.destroy
+    @article.destroy!
 
     respond_to do |format|
-      format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
+      format.html { redirect_to articles_url, notice: 'Article was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_article
-      @article = Article.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def article_params
-      params.fetch(:article, {}).permit(:name, :description, :comments)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_article
+    @article = Article.find(params[:id])
+  end
 
-    def eligible_for_update
-      not_allowed_list = ['Naveen', 'Test one']
+  # Only allow a list of trusted parameters through.
+  def article_params
+    params.fetch(:article, {}).permit(:name, :description, :comments)
+  end
 
-      if not_allowed_list.include? @article.name
-        render(json: { message: "You can't update this article" }, status: 422) && return
-      end
-    end
+  def eligible_for_update
+    not_allowed_list = ['Naveen', 'Test one']
 
-    def set_total_read_count
-      # @total_read_count = Article.where(read: true).count
-      @total_read_count = 3
-    end
+    return unless not_allowed_list.include? @article.name
+
+    render(json: { message: "You can't update this article" }, status: 422)
+  end
+
+  def set_total_read_count
+    # @total_read_count = Article.where(read: true).count
+    @total_read_count = 3
+  end
 end

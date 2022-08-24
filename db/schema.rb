@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_16_021352) do
+ActiveRecord::Schema.define(version: 2022_08_23_022311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,36 @@ ActiveRecord::Schema.define(version: 2022_08_16_021352) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "comments"
+    t.bigint "user_id"
+    t.bigint "category_id"
+    t.bigint "blog_id"
+    t.index ["blog_id"], name: "index_articles_on_blog_id"
+    t.index ["category_id"], name: "index_articles_on_category_id"
+    t.index ["user_id"], name: "index_articles_on_user_id"
   end
 
+  create_table "blogs", force: :cascade do |t|
+    t.string "name"
+    t.boolean "public", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "phone"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "articles", "blogs"
+  add_foreign_key "articles", "categories"
+  add_foreign_key "articles", "users"
 end
