@@ -15,7 +15,7 @@ class ArticlesController < BaseController
   def index
     @per_page = per_page
     @articles = Article.first(@per_page.to_i)
-    render json: { articles: @articles, meta: { total: @articles.count } }, status: :ok
+    # render json: { articles: @articles, meta: { total: @articles.count } }, status: :ok
   end
 
   # GET /articles/1 or /articles/1.json
@@ -78,7 +78,7 @@ class ArticlesController < BaseController
 
   # Only allow a list of trusted parameters through.
   def article_params
-    params.fetch(:article, {}).permit(:name, :description, :comments)
+    params.fetch(:article, {}).permit(:name, :description)
   end
 
   def eligible_for_update
