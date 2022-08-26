@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :articles
+  resources :articles do
+    resources :comments
+  end
+
+  resources :categories
+  resources :blogs
   get '/ping', to: 'ping#info', as: 'ping'
   get '/error_info', to: 'ping#error_info'
   # root 'articles#index'
