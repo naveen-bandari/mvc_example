@@ -1,17 +1,35 @@
 # frozen_string_literal: true
 
 class ArticlesController < BaseController
-  before_action :set_article, only: %i[show edit update destroy]
+  before_action :set_article, only: %i[show edit update destroy mark_as_read mark_as_liked]
   before_action :eligible_for_update, only: %i[update]
   before_action :set_total_read_count, only: %i[index]
 
-  # GET /articles or /articles.json
-  # method/action
-
+  # POST /articles/:id/mark_as_read
   def mark_as_read
-    @article.update(read: true)
+    @article.update!(read: true)
+    respond_to do |format|
+      format.html { redirect_to articles_url, notice: 'Article was successfully marked as read.' }
+    end
   end
 
+  # POST /articles/:id/mark_as_liked
+  def mark_as_liked
+    @article.likes.create(user_id: params[:user_id])
+    respond_to do |format|
+      format.html { redirect_to articles_url, notice: 'Article was successfully marked as liked by user.' }
+    end
+  end
+
+  def total_likes_count
+    render json: { likes_count: Like.count }, status: :ok
+  end
+
+  def total_read_artilces_count
+    render json: { article: Article.where(read: true).count }, status: :ok
+  end
+
+  # GET /articles or /articles.json
   def index
     @per_page = per_page
     @articles = Article.first(@per_page.to_i)

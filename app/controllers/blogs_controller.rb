@@ -1,22 +1,20 @@
+# frozen_string_literal: true
+
 class BlogsController < BaseController
-	before_action :set_blog, only: [:show, :edit, :update, :destroy]
+  before_action :set_blog, only: %i[show edit update destroy]
 
-	def index
-		@blogs = Blog.all
-	end
+  def index
+    @blogs = Blog.all
+  end
 
-	def show
-		
-	end
+  def show; end
 
-	def new
-		@select_options = ['first', 'second', 'third']
-		@blog = Blog.new #This is not yet stored in DB, it is just a new object
-	end
+  def new
+    @select_options = %w[first second third]
+    @blog = Blog.new # This is not yet stored in DB, it is just a new object
+  end
 
-	def edit
-		
-	end
+  def edit; end
 
   # POST /blogs or /blogs.json
   def create
@@ -46,19 +44,18 @@ class BlogsController < BaseController
     end
   end
 
-	def destroy
-		@blog.destroy!
-	end
+  def destroy
+    @blog.destroy!
+  end
 
-	private
+  private
 
-	def set_blog
-		@blog = Blog.find(params[:id])
-	end
+  def set_blog
+    @blog = Blog.find(params[:id])
+  end
 
   # Only allow a list of trusted parameters through.
   def blog_params
     params.fetch(:blog, {}).permit(:name, :public)
   end
-
 end

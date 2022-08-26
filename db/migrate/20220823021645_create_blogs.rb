@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class CreateBlogs < ActiveRecord::Migration[6.1]
   def change
     create_table :blogs do |t|
-      t.string  :name
-      t.boolean  :public, default: true
+      t.string :name
+      t.boolean :public, default: true
 
       t.timestamps
     end

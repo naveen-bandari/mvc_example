@@ -6,7 +6,7 @@
 <table>
   <thead>
     <tr>
-      <th colspan="6"></th>
+      <th colspan="8"></th>
     </tr>
   </thead>
 
@@ -15,8 +15,20 @@
       <tr>
         <td><%= article.name %></td>
         <td><%= article.description %></td>
+        <td><%= article.read %></td>
+        <td><%= article.likes.count %></td>
         <td><%= link_to 'Show', article %></td>
         <td><%= link_to 'Edit', edit_article_path(article) %></td>
+        <td>
+          <%= link_to 'Mark as Liked', mark_as_liked_article_path(article, user_id: User.first.id), method: :post %>
+        </td>
+        <td>
+          <% if article.read %>
+            Read
+          <% else %>
+            <%= link_to 'Mark as Read', mark_as_read_article_path(article), method: :post, data: { confirm: 'Are you sure want to mark it as Read?' } %>
+          <% end %>
+          </td>
         <td><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

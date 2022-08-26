@@ -1,5 +1,12 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :articles do
+    post :mark_as_read, on: :member
+    post :mark_as_liked, on: :member
+    get :total_likes_count, on: :collection
+    get :total_read_artilces_count, on: :collection
+
     resources :comments
   end
 
