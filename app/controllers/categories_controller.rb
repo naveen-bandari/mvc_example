@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class CategoriesController < BaseController
-  before_action	:set_category, only: %i[show update destroy edit]
+  before_action :set_category, only: %i[show update destroy edit]
 
   def index
     @categories = Category.all
