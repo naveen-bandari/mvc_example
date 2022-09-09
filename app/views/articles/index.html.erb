@@ -6,11 +6,23 @@
 <table>
   <thead>
     <tr>
-      <th colspan="8"></th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Read</th>
+      <th>Likes count</th>
+      <th>SHOW</th>
+      <th>EDIT</th>
+      <th>Marked as Liked</th>
+      <th>Marked as Read</th>
+      <th>Destroy</th>
+      <th>User Name</th>
     </tr>
   </thead>
 
+
   <tbody>
+    <br/>
+    <br/>
     <% @articles.each do |article| %>
       <tr>
         <td><%= article.name %></td>
@@ -30,6 +42,7 @@
           <% end %>
           </td>
         <td><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= article.user_name(article.user_id) %></td>
       </tr>
     <% end %>
   </tbody>
