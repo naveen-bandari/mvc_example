@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include UserInfoConcern
+
   validates  :name, :email, presence: true
   validate  :check_for_valid_user
 
