@@ -9,6 +9,10 @@ class Article < ApplicationRecord
 
   before_validation :set_default_user
 
+  scope :read, -> { where(read: true) }
+  scope :with_long_name, ->(length = 20) { where("LENGTH(name) > ?", length) }
+
+
   # Setting up the default user whenever we are not passing the user_id
   def set_default_user
     return if user_id
