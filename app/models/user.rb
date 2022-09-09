@@ -16,6 +16,14 @@ class User < ApplicationRecord
   before_create :generate_uid
   before_validation :add_prefix_to_name
 
+  scope :females, -> { where(gender: 'female') }
+
+  scope :with_gender, ->(gender) { where(gender: gender) }
+
+  scope :with_long_name, ->(length = 20) { where("LENGTH(name) > ?", length) }
+
+  default_scope { where(active: true) }
+
   # after_save  :send_user_profile_update_alert
   # after_save  :send_user_profile_update_alert, if: :can_trigger_save_callback?
   # after_save  :send_an_email_alert, if: :email_previously_changed?
